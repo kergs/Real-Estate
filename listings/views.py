@@ -1,15 +1,25 @@
 from django.shortcuts import render, redirect
 from .models import Listing
 from .forms import ListingForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 
 def listing_list(request):
     listings = Listing.objects.all()
-    context = {
-        "listings": listings
-    }
-    return render(request, "listings.html", context)
+    object_listing = Listing.objects.all()
+
+    paginator = Paginator(object_listing, 1)
+    page = request.GET.get('page')
+    try:
+        listings = paginator.page(page)
+    except PageNotAnInteger:
+        listings = paginator.page(1)
+    except EmptyPage:
+        listings = paginator.page(paginator.num_pages)
+
+    return render(request, 'listings.html', {"listings": listings, "page" : page})
 
 
 def listing_retrieve(request, pk):
