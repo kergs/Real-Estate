@@ -9,6 +9,7 @@
 
     {% if request.user.is_staff %}
     <div class="mt-5 py-5 border-t border-gray-200">
+     <img src="{{ listing.image.url }}" alt= ""/>
         <a href="/listings/{{ listing.id }}/edit/" class="text-blue-500">
             EDIT
         </a>
