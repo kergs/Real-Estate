@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Listing(models.Model):
@@ -8,7 +9,7 @@ class Listing(models.Model):
     num_bathrooms = models.IntegerField()
     description = models.CharField(max_length=900)
     address = models.CharField(max_length=100)
-    image = models.ImageField()
+    image = CloudinaryField('real estate')
 
     def __str__(self):
         return self.title
