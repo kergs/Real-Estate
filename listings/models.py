@@ -9,7 +9,8 @@ class Listing(models.Model):
     num_bathrooms = models.IntegerField()
     description = models.CharField(max_length=900)
     address = models.CharField(max_length=100)
-    image = CloudinaryField('real estate')
-
+    image = CloudinaryField("image") 
+    
     def __str__(self):
         return self.title
+

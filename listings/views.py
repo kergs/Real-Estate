@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Listing
 from .forms import ListingForm
+import cloudinary
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect
+
 
 
 # Create your views here.
@@ -10,7 +13,7 @@ def listing_list(request):
     listings = Listing.objects.all()
     object_listing = Listing.objects.all()
 
-    paginator = Paginator(object_listing, 1)
+    paginator = Paginator(object_listing,2)
     page = request.GET.get('page')
     try:
         listings = paginator.page(page)
@@ -35,8 +38,9 @@ def listing_create(request):
     if request.method == "POST":
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
+            
             form.save()
-            return redirect("/")
+            return redirect('/')
 
     context = {
         "form": form
@@ -50,9 +54,11 @@ def listing_update(request, pk):
 
     if request.method == "POST":
         form = ListingForm(request.POST, instance=listing, files=request.FILES)
+        
         if form.is_valid():
+            
             form.save()
-            return redirect("/")
+            return redirect('/')
 
     context = {
         "form": form

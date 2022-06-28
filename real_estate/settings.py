@@ -130,8 +130,8 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config( 
   cloud_name = "dcvn8gbfh", 
-  api_key = "653964664371616", 
-  api_secret = "6Vent_3y7boC6hmSBEDfNmSPQwU",
+  api_key = os.getenv("API_KEY"), 
+  api_secret = os.getenv("API_SECRET"),
   secure = True
 )
 
