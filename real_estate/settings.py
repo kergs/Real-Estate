@@ -18,6 +18,7 @@ load_dotenv(find_dotenv())
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,13 +29,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('HIDDEN_KEY')
+environment = os.getenv('ENVIRONMENT', 'development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
+if environment == 'development':
+    
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+      }
+    }
+elif environment == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ['']
+    DATABASES ={}
+    DATABASES['default'] = dj_database_url.config()
+     
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,13 +54,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'listings',
     'cloudinary',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,12 +96,7 @@ WSGI_APPLICATION = 'real_estate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 # Password validation
@@ -125,11 +134,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = 'real estate/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config( 
-  cloud_name = "dcvn8gbfh", 
+  cloud_name = os.getenv("CLOUD_NAME"), 
   api_key = os.getenv("API_KEY"), 
   api_secret = os.getenv("API_SECRET"),
   secure = True
