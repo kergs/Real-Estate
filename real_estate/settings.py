@@ -42,7 +42,7 @@ if environment == 'development':
     }
 elif environment == 'production':
     DEBUG = False
-    ALLOWED_HOSTS = ['kergs-realestate.herokuapp.com']
+    ALLOWED_HOSTS = ['kergs-realproperties.herokuapp.com']
     DATABASES ={}
     DATABASES['default'] = dj_database_url.config()
      
