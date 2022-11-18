@@ -33,18 +33,19 @@ environment = os.getenv('ENVIRONMENT', 'development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if environment == 'development':
-    
+    DEBUG = True
+    ALLOWED_HOSTS = []
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-      }
+     }
     }
 elif environment == 'production':
-    DEBUG = False
-    ALLOWED_HOSTS = ['kergs-realproperties.herokuapp.com']
-    DATABASES ={}
-    DATABASES['default'] = dj_database_url.config()
+     DEBUG = True
+     ALLOWED_HOSTS = ['kergs-realproperties.herokuapp.com']
+     DATABASES = {}
+     DATABASES['default'] = dj_database_url.config()
      
 # Application definition
 
